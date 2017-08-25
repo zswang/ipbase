@@ -1,7 +1,7 @@
-const ip = require('ip');
 /*<remove>*/
-/*jshint esversion: 6 */
+/* jshint esversion: 6 */
 /*</remove>*/
+const ip = require('ip');
 /*<jdists encoding="ejs" data="../package.json">*/
 /**
  * @file <%- name %>
