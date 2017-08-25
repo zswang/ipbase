@@ -1,1 +1,1 @@
-const ipbase = require('../');
+const ipbase = require('../lib/index.js');

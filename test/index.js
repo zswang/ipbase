@@ -1,4 +1,4 @@
-const ipbase = require('../');
+const ipbase = require('../lib/index.js');
 
 
 describe("src/index.js", function () {
