@@ -1,7 +1,7 @@
 /*<remove>*/
 /* jshint esversion: 6 */
 /*</remove>*/
-const ip = require('ip');
+const ip = require("ip");
 /*<jdists encoding="ejs" data="../package.json">*/
 /**
  * @file <%- name %>
@@ -56,8 +56,9 @@ function ipInList(address, list) {
     list = [list];
   }
 
-  return list.some(function (item) {
-    if (item.indexOf('/') >= 0) { // CIDR
+  return list.some(function(item) {
+    if (item.indexOf("/") >= 0) {
+      // CIDR
       return ip.cidrSubnet(item).contains(address);
     } else {
       return ip.isEqual(item, address);
@@ -86,6 +87,16 @@ exports.ipInList = ipInList;
     var req = {
       headers: {
         'x-forwarded-for': '198.168.100.54'
+      }
+    }
+    console.log(ipbase.getClientAddress(req));
+    // > 198.168.100.54
+  ```
+ * @example getClientAddress():x-forwarded-for 2
+  ```js
+    var req = {
+      headers: {
+        'x-forwarded-for': '198.168.100.54,10.10.76.11'
       }
     }
     console.log(ipbase.getClientAddress(req));
@@ -132,9 +143,14 @@ exports.ipInList = ipInList;
  */
 function getClientAddress(req) {
   // https://stackoverflow.com/questions/8107856/how-to-determine-a-users-ip-address-in-node
-  return (req.headers && (req.headers['x-real-ip'] || req.headers['x-forwarded-for'])) ||
-    (req.connection && req.connection.remoteAddress) ||
-    (req.socket && req.socket.remoteAddress) ||
-    (req.connection && req.connection.socket && req.connection.socket.remoteAddress);
+  return String(
+    (req.headers &&
+      (req.headers["x-forwarded-for"] || req.headers["x-real-ip"])) ||
+      (req.connection && req.connection.remoteAddress) ||
+      (req.socket && req.socket.remoteAddress) ||
+      (req.connection &&
+        req.connection.socket &&
+        req.connection.socket.remoteAddress)
+  ).split(/\s*,\s*/)[0];
 }
 exports.getClientAddress = getClientAddress;

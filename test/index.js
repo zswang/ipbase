@@ -1,4 +1,4 @@
-const ipbase = require('../lib/index.js');
+const ipbase = require('../');
 
 
 describe("src/index.js", function () {
@@ -45,6 +45,17 @@ describe("src/index.js", function () {
     var req = {
       headers: {
         'x-forwarded-for': '198.168.100.54'
+      }
+    }
+    examplejs_print(ipbase.getClientAddress(req));
+    assert.equal(examplejs_printLines.join("\n"), "198.168.100.54"); examplejs_printLines = [];
+  });
+          
+  it("getClientAddress():x-forwarded-for 2", function () {
+    examplejs_printLines = [];
+    var req = {
+      headers: {
+        'x-forwarded-for': '198.168.100.54,10.10.76.11'
       }
     }
     examplejs_print(ipbase.getClientAddress(req));
